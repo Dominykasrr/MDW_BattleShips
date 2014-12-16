@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Battle Ship.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Battle Ship.Designer.cs">
+      <DependentUpon>Battle Ship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cell.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +66,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Battle Ship.resx">
+      <DependentUpon>Battle Ship.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
