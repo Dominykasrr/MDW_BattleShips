@@ -17,5 +17,10 @@ namespace BattleShipClient
             Image = image;
             P = p;
         }
+
+        public Cell getCell()
+        {
+            return this;
+        }
     }
 }

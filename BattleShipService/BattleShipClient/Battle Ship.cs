@@ -14,7 +14,6 @@ namespace BattleShipClient
     {
         private int type;
         private List<Cell> cellList = new List<Cell>();
-        Cell cell1;
         Point a1 = new Point(0, 0);
         Graphics grapgics;
         int drawRow = 0;
@@ -23,7 +22,21 @@ namespace BattleShipClient
         {
             InitializeComponent();
             this.type = 0;
-            this.cell1 = new Cell(a1, this.imageList1.Images[0]);
+        }
+
+        private void createCell()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                a1.X = 0;
+                for (int j = 0; j < 9; j++)
+                {
+                    Cell temp = new Cell(a1, this.imageList1.Images[0]);
+                    a1.X += 35;
+                    this.cellList.Add(temp);
+                }
+                a1.Y += 35;
+            }
         }
 
         private void PaintCell(Cell a, Graphics gr)
@@ -54,7 +67,12 @@ namespace BattleShipClient
                 e.Graphics.DrawLine(p, drawRow, 5, drawRow, rect.Height);
                 drawRow += x;
             }
-            this.PaintCell(cell1, grapgics);
+            
+            this.createCell();
+            foreach (Cell item in cellList)
+            {
+                this.PaintCell(item, grapgics);
+            }
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
@@ -87,14 +105,20 @@ namespace BattleShipClient
 
         private void panel2_MouseClick(object sender, MouseEventArgs e)
         {
-            Point p = new Point(e.X, e.Y);
             Point a = new Point(-1, -1);
-            if (e.X > 0 && e.X <= 70 && e.Y > 0 && e.Y <= 35)
+
+            foreach (Cell item in cellList)
             {
-                if (this.type == 1)
+                if (e.X > item.P.X && e.X <= item.P.X + 35 && e.Y > item.P.Y && e.Y <= item.P.Y + 35)
                 {
-                    Cell temp = new Cell(a, this.imageList1.Images[1]);
-                    cell1 = temp;
+                    for (int i = 0; i < cellList.Count; i++)
+                    {
+                        if (cellList[i].getCell() == item)
+                        {
+                            cellList[i].Image = this.imageList1.Images[1];
+                        }
+
+                    }
                 }
             }
             this.panel2.Refresh();
