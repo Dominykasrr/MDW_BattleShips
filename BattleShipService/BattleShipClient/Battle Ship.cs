@@ -7,21 +7,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.ServiceModel;
+using BattleShipService;
 
 namespace BattleShipClient
 {
-    public partial class Battle_Ship : Form
+    public partial class Battle_Ship : Form, ServiceReference1.IChatCallback
     {
+        string Playername;
+        string Opponent;
+        ServiceReference1.ChatClient proxy2;
+
         private int type;
         private List<Cell> cellList = new List<Cell>();
         Point a1 = new Point(0, 0);
         Graphics grapgics;
         int drawRow = 0;
         int drawCol = 0;
-        public Battle_Ship()
+        public Battle_Ship(Game game, string username, string opponent)
         {
             InitializeComponent();
             this.type = 0;
+
+            proxy2 = new ServiceReference1.ChatClient(new InstanceContext(this));
+
+            this.lbName.Text = username + " !";
+            this.Playername = username;
+            this.Opponent = opponent;
+            proxy2.StartChatSession(Playername);
         }
 
         private void createCell()
@@ -67,7 +80,7 @@ namespace BattleShipClient
                 e.Graphics.DrawLine(p, drawRow, 5, drawRow, rect.Height);
                 drawRow += x;
             }
-            
+
             this.createCell();
             foreach (Cell item in cellList)
             {
@@ -124,5 +137,41 @@ namespace BattleShipClient
             this.panel2.Refresh();
         }
 
+
+        public void UpdateChatMessages(string message, string playername)
+        {
+            this.lb_DisplayMessages.ScrollAlwaysVisible = true;
+            this.lb_DisplayMessages.Items.Add(playername + ": " + message);
+        }
+
+        private void btSend_Click(object sender, EventArgs e)
+        {
+            if (this.tbWriteChat.Text != "")
+            {
+                string msg = this.tbWriteChat.Text;
+                this.tbWriteChat.Text = string.Empty;
+                proxy2.PostChatMessage(msg, Playername, Opponent);
+                this.lb_DisplayMessages.Items.Add(Playername + " : " + msg);
+            }
+            else
+            {
+                MessageBox.Show("You have to type the message first.");
+            }
+        }
+
+        private void btnReady_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void btnNewGame_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -7,20 +7,40 @@ using System.Text;
 
 namespace BattleShipService
 {
-    //[ServiceContract]
-    [ServiceContract(Namespace="BattleShipService", CallbackContract = typeof(PlayerLogInCallback))]
+    [ServiceContract(Namespace = "BattleShipService", CallbackContract = typeof(IPortalCallback))]
+
     public interface IPortal
     {
         [OperationContract]
-        bool Login(string name, string password);
+        bool Login(string name, string passwd);
 
-
-    }
-    [ServiceContract(Namespace="BattleShipService")]
-    public interface PlayerLogInCallback
-    {
         [OperationContract]
-        void playerLoggedIn(string name);
+        List<Player> GetOnlinePlayer();
+
+        [OperationContract(IsOneWay = true)]
+        void InvitePlayer(string p1, string p2);
+
+        [OperationContract(IsOneWay = true)]
+        void AcceptInvitation(string p1, string p2);
+
+        [OperationContract]
+        Player GetPlayer(string playerusername);
+
+        [OperationContract(IsOneWay = true)]
+        void Update();
     }
 
+
+    [ServiceContract(Namespace = "BattleShipService")]
+    public interface IPortalCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void NotifyChallenge(string Name);
+
+        [OperationContract]
+        void NotifyResponce(Game game);
+
+        [OperationContract(IsOneWay = true)]
+        void PlayerLoggedIn(List<Player> playerlists);
+    }
 }
