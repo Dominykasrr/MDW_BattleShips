@@ -75,11 +75,11 @@
             // 
             this.nameInput.AutoSize = true;
             this.nameInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameInput.Location = new System.Drawing.Point(49, 34);
+            this.nameInput.Location = new System.Drawing.Point(23, 34);
             this.nameInput.Name = "nameInput";
-            this.nameInput.Size = new System.Drawing.Size(51, 16);
+            this.nameInput.Size = new System.Drawing.Size(77, 16);
             this.nameInput.TabIndex = 36;
-            this.nameInput.Text = "Name :";
+            this.nameInput.Text = "Username :";
             // 
             // tbName
             // 

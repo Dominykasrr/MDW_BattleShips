@@ -74,6 +74,7 @@ namespace BattleShipClient
                     string opponentPlayer = this.lbOnlinePlayers.SelectedItem.ToString();
                     this.opponent = opponentPlayer;
                     proxy.InvitePlayer(opponentPlayer, myUsername);
+                    this.Hide();
                 }
                 else
                 {
