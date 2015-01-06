@@ -66,6 +66,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Ship.cs" />
     <EmbeddedResource Include="Battle Ship.resx">
       <DependentUpon>Battle Ship.cs</DependentUpon>
     </EmbeddedResource>

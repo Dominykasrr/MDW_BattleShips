@@ -20,10 +20,14 @@ namespace BattleShipClient
 
         private int type;
         private List<Cell> cellList = new List<Cell>();
+        private List<Cell> cellList2 = new List<Cell>();
+        private List<Ship> Shiplist = new List<Ship>();
         Point a1 = new Point(0, 0);
+        Point b1 = new Point(0, 0);
         Graphics grapgics;
         int drawRow = 0;
         int drawCol = 0;
+        Ship ship1;
         public Battle_Ship(Game game, string username, string opponent)
         {
             InitializeComponent();
@@ -44,7 +48,7 @@ namespace BattleShipClient
                 a1.X = 0;
                 for (int j = 0; j < 9; j++)
                 {
-                    Cell temp = new Cell(a1, this.imageList1.Images[0]);
+                    Cell temp = new Cell(a1, this.imageList1.Images[0],0);
                     a1.X += 35;
                     this.cellList.Add(temp);
                 }
@@ -52,9 +56,36 @@ namespace BattleShipClient
             }
         }
 
+        private void createCell2()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                b1.X = 0;
+                for (int j = 0; j < 9; j++)
+                {
+                    Cell temp = new Cell(b1, this.imageList1.Images[0], 0);
+                    b1.X += 35;
+                    this.cellList2.Add(temp);
+                }
+                b1.Y += 35;
+            }
+        }
+
         private void PaintCell(Cell a, Graphics gr)
         {
             Rectangle destrec = new Rectangle(a.P.X, a.P.Y, 70, 35);
+            gr.DrawImage(a.Image, destrec);
+        }
+
+        private void PaintCell2(Cell a, Graphics gr)
+        {
+            Rectangle destrec = new Rectangle(a.P.X, a.P.Y, 105, 35);
+            gr.DrawImage(a.Image, destrec);
+        }
+
+        private void PaintCell3(Cell a, Graphics gr)
+        {
+            Rectangle destrec = new Rectangle(a.P.X, a.P.Y, 35, 70);
             gr.DrawImage(a.Image, destrec);
         }
 
@@ -84,12 +115,24 @@ namespace BattleShipClient
             this.createCell();
             foreach (Cell item in cellList)
             {
-                this.PaintCell(item, grapgics);
+                if (item.type == 1)
+                {
+                    this.PaintCell(item, grapgics);
+                }
+                else if (item.type == 2)
+                {
+                    this.PaintCell2(item, grapgics);
+                }
+                else if (item.type == 3)
+                {
+                    this.PaintCell3(item, grapgics);
+                }
             }
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
+            grapgics = e.Graphics;
             Rectangle rect = this.Bounds;
             int col = rect.Width;
             int row = rect.Height;
@@ -109,6 +152,22 @@ namespace BattleShipClient
                 e.Graphics.DrawLine(p, drawRow, 5, drawRow, rect.Height);
                 drawRow += x;
             }
+
+            this.createCell2();
+
+            this.ship1 = new Ship(cellList2[1], cellList2[2], cellList2[3]);
+            this.ship1.holdingCell = 3;
+            cellList2[1].ship = ship1;
+            cellList2[2].ship = ship1;
+            cellList2[3].ship = ship1;
+            Shiplist.Add(ship1);
+
+            foreach (Cell item in cellList2)
+            {
+                Rectangle destrec = new Rectangle(item.P.X, item.P.Y, 35, 35);
+                this.grapgics.DrawImage(item.Image, destrec);
+            }
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -116,24 +175,129 @@ namespace BattleShipClient
             this.type = 1;
         }
 
-        private void panel2_MouseClick(object sender, MouseEventArgs e)
+        private bool GetNextEmptyCell(Cell cell)
         {
-            Point a = new Point(-1, -1);
-
             foreach (Cell item in cellList)
             {
-                if (e.X > item.P.X && e.X <= item.P.X + 35 && e.Y > item.P.Y && e.Y <= item.P.Y + 35)
+                if (item.P.X == cell.P.X + 35 && item.P.Y == cell.P.Y && item.empty == 0)
                 {
-                    for (int i = 0; i < cellList.Count; i++)
-                    {
-                        if (cellList[i].getCell() == item)
-                        {
-                            cellList[i].Image = this.imageList1.Images[1];
-                        }
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        private bool GetNextEmptyCell2(Cell cell)
+        {
+            foreach (Cell item in cellList)
+            {
+                if (item.P.X == cell.P.X + 70 && item.P.Y == cell.P.Y && item.empty == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool GetNextBottomEmptyCell(Cell cell)
+        {
+            foreach (Cell item in cellList)
+            {
+                for (int i = 0; i < cellList.Count; i++)
+                {
+                    if (cellList[i] == cell)
+                    {
+                        if (cellList[i + 10].empty == 0)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
+            return false;
+        }
+
+        private void panel2_MouseClick(object sender, MouseEventArgs e)
+        {
+            Point a = new Point(-1, -1);
+            if (this.type == 1)
+            {
+                foreach (Cell item in cellList)
+                {
+                    if (e.X > item.P.X && e.X <= item.P.X + 35 && e.Y > item.P.Y && e.Y <= item.P.Y + 35)
+                    {
+                        for (int i = 0; i < cellList.Count; i++)
+                        {
+                            if (cellList[i].getCell() == item)
+                            {
+                                if (GetNextEmptyCell(item) == true)
+                                {
+                                    cellList[i].empty = 1;
+                                    cellList[i].type = 1;
+                                    cellList[i + 1].empty = 1;
+                                    cellList[i].Image = this.imageList2.Images[1];
+
+                                    Ship temp = new Ship(cellList[i], cellList[i + 1]);
+                                    Shiplist.Add(temp);
+                                    cellList[i].ship = temp;
+                                    cellList[i + 1].ship = temp;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            if (this.type == 2)
+            {
+                foreach (Cell item in cellList)
+                {
+                    if (e.X > item.P.X && e.X <= item.P.X + 35 && e.Y > item.P.Y && e.Y <= item.P.Y + 35)
+                    {
+                        for (int i = 0; i < cellList.Count; i++)
+                        {
+                            if (cellList[i].getCell() == item)
+                            {
+                                if (GetNextEmptyCell(item) == true && GetNextEmptyCell2(item) == true)
+                                {
+                                    cellList[i].empty = 1;
+                                    cellList[i + 1].empty = 1;
+                                    cellList[i + 2].empty = 1;
+                                    cellList[i].type = 2;
+                                    cellList[i].Image = this.imageList2.Images[1];
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            if (this.type == 3)
+            {
+                foreach (Cell item in cellList)
+                {
+                    if (e.X > item.P.X && e.X <= item.P.X + 35 && e.Y > item.P.Y && e.Y <= item.P.Y + 35)
+                    {
+                        for (int i = 0; i < cellList.Count; i++)
+                        {
+                            if (cellList[i].getCell() == item)
+                            {
+                                if (GetNextBottomEmptyCell(item))
+                                {
+                                    cellList[i].empty = 1;
+                                    cellList[i + 10].empty = 1;
+                                    cellList[i].type = 3;
+                                    cellList[i].Image = this.imageList2.Images[2];
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
             this.panel2.Refresh();
         }
 
@@ -173,5 +337,72 @@ namespace BattleShipClient
         {
             this.Close();
         }
+
+        private void pictureBox2_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.type = 2;
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            this.type = 3;
+        }
+
+        private void panel3_MouseClick(object sender, MouseEventArgs e)
+        {
+            Point a = new Point(-1, -1);
+
+            foreach (Cell item in cellList2)
+            {
+                if (e.X > item.P.X && e.X <= item.P.X + 35 && e.Y > item.P.Y && e.Y <= item.P.Y + 35)
+                {
+                    for (int i = 0; i < cellList2.Count; i++)
+                    {
+                        if (cellList2[i].getCell() == item)
+                        {
+                            if (cellList2[i].ship != null)
+                            {
+                                cellList2[i].empty = 0;
+                                for (int j = 0; j < Shiplist.Count; i++)
+                                {
+                                    if (Shiplist[j].holdingCell == cellList2[i].ship.holdingCell)
+                                    {
+                                        Shiplist[j].celllist.Remove(cellList2[i]);
+                                        cellList2[i].ship.holdingCell -= 1;
+                                        cellList2[i].Image = imageList2.Images[3];
+                                        if (Shiplist[j].celllist.Count < 1)
+                                        {
+                                            MessageBox.Show("HIT!");
+                                            this.panel3.Refresh();
+                                            return;
+                                        }
+                                        this.panel3.Refresh();
+                                        return;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                cellList2[i].Image = imageList2.Images[4];
+                            }
+                        }
+
+                    }
+                }
+            }
+            this.panel3.Refresh();
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            this.type = 2;
+        }
+
+        private void pictureBox3_Click_1(object sender, EventArgs e)
+        {
+            this.type = 3;
+        }
+
     }
 }

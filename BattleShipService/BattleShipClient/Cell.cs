@@ -11,9 +11,13 @@ namespace BattleShipClient
     {
         public Point P;
         public Image Image;
+        public int empty;
+        public int type = 0;
+        public Ship ship = null;
 
-        public Cell(Point p, Image image)
+        public Cell(Point p, Image image, int empty)
         {
+            this.empty = empty;
             Image = image;
             P = p;
         }
@@ -22,5 +26,7 @@ namespace BattleShipClient
         {
             return this;
         }
+
+
     }
 }
