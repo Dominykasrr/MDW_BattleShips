@@ -15,13 +15,19 @@ namespace BattleShipService
 
         [OperationContract(IsOneWay = true)]
         void Shoot(int x, int y);
+
+        [OperationContract]
+        void AddShip(int x,int y);
+
+        [OperationContract]
+        void AddCell(int x, int y);
     
     }
     [ServiceContract(Namespace = "BattleShipService")]
     public interface IGameCallback
     {
-        void PlayerReady();
-        void NotifyShot(int x, int y);
+        //void PlayerReady();
+        //void NotifyShot(int x, int y);
     }
 
 }

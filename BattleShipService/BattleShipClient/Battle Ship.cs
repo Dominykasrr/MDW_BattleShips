@@ -12,11 +12,12 @@ using BattleShipService;
 
 namespace BattleShipClient
 {
-    public partial class Battle_Ship : Form, ServiceReference1.IChatCallback
+    public partial class Battle_Ship : Form, ServiceReference1.IChatCallback,BattleShipService.IGameCallback
     {
         string Playername;
         string Opponent;
         ServiceReference1.ChatClient proxy2;
+        BattleShipService.GameService proxy3;
         private int cellWidth = 35;
         private int cellHeight = 35;
         private int shipLengthToAdd;
@@ -36,6 +37,7 @@ namespace BattleShipClient
             this.shipLengthToAdd = 0;
 
             proxy2 = new ServiceReference1.ChatClient(new InstanceContext(this));
+            proxy3 = new BattleShipService.GameService(new InstanceContext(this));
 
             this.lbName.Text = username + " !";
             this.Playername = username;
@@ -163,6 +165,8 @@ namespace BattleShipClient
             cellX = e.X / cellWidth;
             cellY = e.Y / cellHeight;
 
+            
+
             if (cellArray[cellX, cellY].isEmpty && shipLengthToAdd > 0)
             {
                 if (shipsLeft[shipLengthToAdd - 1] > 0)
@@ -198,6 +202,7 @@ namespace BattleShipClient
                                 for (int i = shipLengthToAdd - 1; i >= 0; i--)
                                 {
                                     cellArray[cellX + i, cellY].isEmpty = false;
+                                    proxy3.AddShip(cellX + i, cellY);
                                 }
                             }
                             else
@@ -205,6 +210,7 @@ namespace BattleShipClient
                                 for (int i = shipLengthToAdd - 1; i >= 0; i--)
                                 {
                                     cellArray[cellX, cellY + i].isEmpty = false;
+                                    proxy3.AddShip(cellX + i, cellY + i);
                                 }
                             }
                             Shiplist.Add(new Ship(cellX, cellY, rbHorizontal.Checked, shipLengthToAdd));
