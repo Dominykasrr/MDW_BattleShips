@@ -8,7 +8,7 @@ using System.Text;
 namespace BattleShipService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public class GameService : IPortal, IChat
+    public class GameService : IPortal, IChat, IBattle
     {
         static Action<List<Player>> PlayerLogIn_Event = delegate { };
         static Action<String> Invitation_Send_Event = delegate { };
@@ -107,6 +107,16 @@ namespace BattleShipService
         {
             Player p1 = GetPlayer(player);
             p1.IchatCallBack = OperationContext.Current.GetCallbackChannel<IChatCallback>();
+        }
+
+        public void ConfirmShips(List<Ship> ships)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Shoot(int x, int y)
+        {
+            throw new NotImplementedException();
         }
     }
 }
