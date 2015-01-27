@@ -15,11 +15,23 @@ namespace BattleShipClient.ServiceReference1 {
     [System.ServiceModel.ServiceContractAttribute(Namespace="BattleShipService", ConfigurationName="ServiceReference1.IPortal", CallbackContract=typeof(BattleShipClient.ServiceReference1.IPortalCallback))]
     public interface IPortal {
         
-        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/Login", ReplyAction="BattleShipService/IPortal/LoginResponse")]
-        bool Login(string name, string passwd);
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/UserRegister", ReplyAction="BattleShipService/IPortal/UserRegisterResponse")]
+        bool UserRegister(int Id, string name, string passwd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/UserRegister", ReplyAction="BattleShipService/IPortal/UserRegisterResponse")]
+        System.Threading.Tasks.Task<bool> UserRegisterAsync(int Id, string name, string passwd);
         
         [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/Login", ReplyAction="BattleShipService/IPortal/LoginResponse")]
-        System.Threading.Tasks.Task<bool> LoginAsync(string name, string passwd);
+        bool Login(int Id, string name, string passwd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/Login", ReplyAction="BattleShipService/IPortal/LoginResponse")]
+        System.Threading.Tasks.Task<bool> LoginAsync(int Id, string name, string passwd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/ResetPassword", ReplyAction="BattleShipService/IPortal/ResetPasswordResponse")]
+        bool ResetPassword(string name, string passwd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/ResetPassword", ReplyAction="BattleShipService/IPortal/ResetPasswordResponse")]
+        System.Threading.Tasks.Task<bool> ResetPasswordAsync(string name, string passwd);
         
         [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IPortal/GetOnlinePlayer", ReplyAction="BattleShipService/IPortal/GetOnlinePlayerResponse")]
         System.Collections.Generic.List<BattleShipService.Player> GetOnlinePlayer();
@@ -93,12 +105,28 @@ namespace BattleShipClient.ServiceReference1 {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public bool Login(string name, string passwd) {
-            return base.Channel.Login(name, passwd);
+        public bool UserRegister(int Id, string name, string passwd) {
+            return base.Channel.UserRegister(Id, name, passwd);
         }
         
-        public System.Threading.Tasks.Task<bool> LoginAsync(string name, string passwd) {
-            return base.Channel.LoginAsync(name, passwd);
+        public System.Threading.Tasks.Task<bool> UserRegisterAsync(int Id, string name, string passwd) {
+            return base.Channel.UserRegisterAsync(Id, name, passwd);
+        }
+        
+        public bool Login(int Id, string name, string passwd) {
+            return base.Channel.Login(Id, name, passwd);
+        }
+        
+        public System.Threading.Tasks.Task<bool> LoginAsync(int Id, string name, string passwd) {
+            return base.Channel.LoginAsync(Id, name, passwd);
+        }
+        
+        public bool ResetPassword(string name, string passwd) {
+            return base.Channel.ResetPassword(name, passwd);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ResetPasswordAsync(string name, string passwd) {
+            return base.Channel.ResetPasswordAsync(name, passwd);
         }
         
         public System.Collections.Generic.List<BattleShipService.Player> GetOnlinePlayer() {
