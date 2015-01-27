@@ -13,18 +13,11 @@ namespace BattleShipService
         static Action<List<Player>> PlayerLogIn_Event = delegate { };
         static Action<String> Invitation_Send_Event = delegate { };
         static Action<Game> Game_Start_Event = delegate { };
-        Action<Cell[,]> CellArray = delegate { };
-        Cell[,] cellArray;
-        int Pointy = 0;
-        int pointx = 0;
-        int cellWidth = 35;
-        int cellHeight = 35;
 
 
         public List<Player> onlinePlayers;
         public List<Player> registeredPlayers;
         List<Game> gamesLists;
-        private InstanceContext instanceContext;
 
         public GameService()
         {
@@ -38,6 +31,7 @@ namespace BattleShipService
             registeredPlayers.Add(new Player(3,"aa", "bb"));
         }
 
+<<<<<<< HEAD
         public GameService(InstanceContext instanceContext)
         {
             // TODO: Complete member initialization
@@ -55,6 +49,9 @@ namespace BattleShipService
         /// <param name="passwd">Player password</param>
         /// <returns>true or false</returns>
         public bool Login(int Id, string name, string passwd)
+=======
+        public bool Login(string name, string passwd)
+>>>>>>> origin/master
         {
             DB dbhelper = new DB();
 
@@ -210,37 +207,6 @@ namespace BattleShipService
         public void Shoot(int x, int y)
         {
             throw new NotImplementedException();
-        }
-
-        public void AddShip(int x,int y)
-        {
-            Cell temp = new Cell(x, y, true);
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    if (cellArray[i,j] == temp)
-                    {
-                        cellArray[i, j].isEmpty = false;
-                    }
-                }
-            }
-        }
-
-        public void AddCell(int x, int y)
-        {
-            Pointy = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                pointx = 0;
-                for (int j = 0; j < 10; j++)
-                {
-                    Cell temp = new Cell(pointx,Pointy, true);
-                    pointx += cellWidth;
-                    cellArray[j, i] = temp;
-                }
-                Pointy += cellHeight;
-            }
         }
     }
 }

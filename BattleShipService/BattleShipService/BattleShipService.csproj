@@ -48,8 +48,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Cell.cs" />
     <Compile Include="DB.cs" />
+=======
+>>>>>>> origin/master
     <Compile Include="Game.cs" />
     <Compile Include="IBattle.cs" />
     <Compile Include="IChat.cs" />
