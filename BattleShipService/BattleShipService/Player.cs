@@ -16,6 +16,7 @@ namespace BattleShipService
         public string passwd;
         public IPortalCallback iPortal_Callback;
         public IChatCallback IchatCallBack;
+        public IGameCallback igameCallBack;
 
         public Player(int useid, string name, string passwd)
         {
@@ -33,5 +34,6 @@ namespace BattleShipService
         public string Passwd { get { return this.passwd; } set { this.passwd = value; } } 
 
         public IPortalCallback IPortal_Callback { get; set; }
+        public IGameCallback IgameCallBack { get; set; }
     }
 }

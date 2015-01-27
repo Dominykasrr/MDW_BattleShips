@@ -70,6 +70,24 @@
   <wsdl:message name="IChat_UpdateChatMessages_InputCallbackMessage">
     <wsdl:part name="parameters" element="tns:UpdateChatMessagesResponse" />
   </wsdl:message>
+  <wsdl:message name="IBattle_StartGameSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:StartGameSession" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_ConfirmReady_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmReady" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_PlayerReady_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:PlayerReady" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_PlayerReady_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:PlayerReadyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_NotifyShot_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NotifyShot" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_NotifyShot_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NotifyShotResponse" />
+  </wsdl:message>
   <wsdl:portType name="IPortal">
     <wsdl:operation name="UserRegister">
       <wsdl:input wsaw:Action="BattleShipService/IPortal/UserRegister" message="tns:IPortal_UserRegister_InputMessage" />
@@ -121,6 +139,22 @@
     <wsdl:operation name="UpdateChatMessages">
       <wsdl:output wsaw:Action="BattleShipService/IChat/UpdateChatMessages" message="tns:IChat_UpdateChatMessages_OutputCallbackMessage" />
       <wsdl:input wsaw:Action="BattleShipService/IChat/UpdateChatMessagesResponse" message="tns:IChat_UpdateChatMessages_InputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IBattle">
+    <wsdl:operation name="StartGameSession">
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/StartGameSession" message="tns:IBattle_StartGameSession_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmReady">
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/ConfirmReady" message="tns:IBattle_ConfirmReady_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PlayerReady">
+      <wsdl:output wsaw:Action="BattleShipService/IBattle/PlayerReady" message="tns:IBattle_PlayerReady_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/PlayerReadyResponse" message="tns:IBattle_PlayerReady_InputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NotifyShot">
+      <wsdl:output wsaw:Action="BattleShipService/IBattle/NotifyShot" message="tns:IBattle_NotifyShot_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/NotifyShotResponse" message="tns:IBattle_NotifyShot_InputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

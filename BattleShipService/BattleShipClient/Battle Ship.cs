@@ -12,11 +12,13 @@ using BattleShipService;
 
 namespace BattleShipClient
 {
-    public partial class Battle_Ship : Form, ServiceReference1.IChatCallback
+    public partial class Battle_Ship : Form, ServiceReference1.IChatCallback, ServiceReference1.IBattleCallback
     {
         string Playername;
         string Opponent;
         ServiceReference1.ChatClient proxy2;
+        ServiceReference1.BattleClient proxy3;
+
         private int cellWidth = 35;
         private int cellHeight = 35;
         private int shipLengthToAdd;
@@ -36,11 +38,13 @@ namespace BattleShipClient
             this.shipLengthToAdd = 0;
 
             proxy2 = new ServiceReference1.ChatClient(new InstanceContext(this));
+            proxy3 = new ServiceReference1.BattleClient(new InstanceContext(this));
 
             this.lbName.Text = username + " !";
             this.Playername = username;
             this.Opponent = opponent;
             proxy2.StartChatSession(Playername);
+            proxy3.StartGameSession(Playername);
             this.createCell();
             this.createCell2();
 
@@ -296,6 +300,22 @@ namespace BattleShipClient
         {
             this.shipLengthToAdd = 4;
             lbSelectedSize.Text = shipLengthToAdd.ToString();
+        }
+
+        private void btnReady_Click(object sender, EventArgs e)
+        {
+            proxy3.ConfirmReady(Playername);
+        }
+
+        public void PlayerReady()
+        {
+            this.lb_DisplayMessages.ScrollAlwaysVisible = true;
+            this.lb_DisplayMessages.Items.Add(Playername + " is ready");
+        }
+
+        public void NotifyShot(int x, int y)
+        {
+            throw new NotImplementedException();
         }
     }
 }

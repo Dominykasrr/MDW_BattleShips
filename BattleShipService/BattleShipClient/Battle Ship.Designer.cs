@@ -149,6 +149,7 @@
             this.btnReady.TabIndex = 24;
             this.btnReady.Text = "Ready";
             this.btnReady.UseVisualStyleBackColor = true;
+            this.btnReady.Click += new System.EventHandler(this.btnReady_Click);
             // 
             // btnNewGame
             // 

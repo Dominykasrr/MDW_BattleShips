@@ -106,7 +106,7 @@ namespace BattleShipClient
                 bool result = proxy.UserRegister(id, nm, ps);
                 if (result)
                 {
-                    MessageBox.Show("You are successfully Registered.\nFollowing are your Login Detials:\nUsername: " + nm + "\nPassword: " + nm + "", "Registration Detials", MessageBoxButtons.OK);
+                    MessageBox.Show("You are successfully Registered.\nFollowing are your Login Detials:\nUsername: " + nm + "\nPassword: " + ps + "", "Registration Detials", MessageBoxButtons.OK);
                     this.gbSignUp.Visible = false;
                 }
                 else

@@ -238,4 +238,76 @@ namespace BattleShipClient.ServiceReference1 {
             return base.Channel.PostChatMessageAsync(message, postername, opponent);
         }
     }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="BattleShipService", ConfigurationName="ServiceReference1.IBattle", CallbackContract=typeof(BattleShipClient.ServiceReference1.IBattleCallback))]
+    public interface IBattle {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="BattleShipService/IBattle/StartGameSession")]
+        void StartGameSession(string player);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="BattleShipService/IBattle/StartGameSession")]
+        System.Threading.Tasks.Task StartGameSessionAsync(string player);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="BattleShipService/IBattle/ConfirmReady")]
+        void ConfirmReady(string opponent);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="BattleShipService/IBattle/ConfirmReady")]
+        System.Threading.Tasks.Task ConfirmReadyAsync(string opponent);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IBattleCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IBattle/PlayerReady", ReplyAction="BattleShipService/IBattle/PlayerReadyResponse")]
+        void PlayerReady();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="BattleShipService/IBattle/NotifyShot", ReplyAction="BattleShipService/IBattle/NotifyShotResponse")]
+        void NotifyShot(int x, int y);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IBattleChannel : BattleShipClient.ServiceReference1.IBattle, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class BattleClient : System.ServiceModel.DuplexClientBase<BattleShipClient.ServiceReference1.IBattle>, BattleShipClient.ServiceReference1.IBattle {
+        
+        public BattleClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
+        }
+        
+        public BattleClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
+        }
+        
+        public BattleClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
+        }
+        
+        public BattleClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
+        }
+        
+        public BattleClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
+        }
+        
+        public void StartGameSession(string player) {
+            base.Channel.StartGameSession(player);
+        }
+        
+        public System.Threading.Tasks.Task StartGameSessionAsync(string player) {
+            return base.Channel.StartGameSessionAsync(player);
+        }
+        
+        public void ConfirmReady(string opponent) {
+            base.Channel.ConfirmReady(opponent);
+        }
+        
+        public System.Threading.Tasks.Task ConfirmReadyAsync(string opponent) {
+            return base.Channel.ConfirmReadyAsync(opponent);
+        }
+    }
 }

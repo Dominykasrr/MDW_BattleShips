@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 namespace BattleShipService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public class GameService : IPortal, IChat
+    public class GameService : IPortal, IChat, IBattle
     {
         static Action<List<Player>> PlayerLogIn_Event = delegate { }; //Player login event.
         static Action<String> Invitation_Send_Event = delegate { }; //Invitation send event.
@@ -235,6 +235,23 @@ namespace BattleShipService
                 }
                 Pointy += cellHeight;
             }
+        }
+
+        public void StartGameSession(string player)
+        {
+            GameSession(player);
+        }
+
+        public void ConfirmReady(string opponent)
+        {
+            Player p1 = GetPlayer(opponent);
+            p1.IgameCallBack.PlayerReady();
+        }
+
+        public void GameSession(string player)
+        {
+            Player p1 = GetPlayer(player);
+            p1.IgameCallBack = OperationContext.Current.GetCallbackChannel<IGameCallback>();
         }
     }
 }
