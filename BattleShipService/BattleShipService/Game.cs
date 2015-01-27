@@ -21,17 +21,6 @@ namespace BattleShipService
             this.gameid = gameid;
             this.player1 = player1;
             this.player2 = player2;
-
-            //Making a player start random.
-            int playerstart = new Random().Next(1, 3);
-            if (playerstart == 1)
-            {
-                this.playertoplay = this.player1;
-            }
-            else
-            {
-                this.playertoplay = this.player2;
-            }
         }
 
         [DataMember]
