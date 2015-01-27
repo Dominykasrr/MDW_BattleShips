@@ -10,7 +10,6 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Passwd" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="UseID" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Player" nillable="true" type="tns:Player" />

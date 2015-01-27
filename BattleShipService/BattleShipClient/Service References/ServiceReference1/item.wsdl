@@ -7,23 +7,11 @@
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/BattleShipService/GameService/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/BattleShipService" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IPortal_UserRegister_InputMessage">
-    <wsdl:part name="parameters" element="tns:UserRegister" />
-  </wsdl:message>
-  <wsdl:message name="IPortal_UserRegister_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UserRegisterResponse" />
-  </wsdl:message>
   <wsdl:message name="IPortal_Login_InputMessage">
     <wsdl:part name="parameters" element="tns:Login" />
   </wsdl:message>
   <wsdl:message name="IPortal_Login_OutputMessage">
     <wsdl:part name="parameters" element="tns:LoginResponse" />
-  </wsdl:message>
-  <wsdl:message name="IPortal_ResetPassword_InputMessage">
-    <wsdl:part name="parameters" element="tns:ResetPassword" />
-  </wsdl:message>
-  <wsdl:message name="IPortal_ResetPassword_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ResetPasswordResponse" />
   </wsdl:message>
   <wsdl:message name="IPortal_GetOnlinePlayer_InputMessage">
     <wsdl:part name="parameters" element="tns:GetOnlinePlayer" />
@@ -71,17 +59,9 @@
     <wsdl:part name="parameters" element="tns:UpdateChatMessagesResponse" />
   </wsdl:message>
   <wsdl:portType name="IPortal">
-    <wsdl:operation name="UserRegister">
-      <wsdl:input wsaw:Action="BattleShipService/IPortal/UserRegister" message="tns:IPortal_UserRegister_InputMessage" />
-      <wsdl:output wsaw:Action="BattleShipService/IPortal/UserRegisterResponse" message="tns:IPortal_UserRegister_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="BattleShipService/IPortal/Login" message="tns:IPortal_Login_InputMessage" />
       <wsdl:output wsaw:Action="BattleShipService/IPortal/LoginResponse" message="tns:IPortal_Login_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="ResetPassword">
-      <wsdl:input wsaw:Action="BattleShipService/IPortal/ResetPassword" message="tns:IPortal_ResetPassword_InputMessage" />
-      <wsdl:output wsaw:Action="BattleShipService/IPortal/ResetPasswordResponse" message="tns:IPortal_ResetPassword_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetOnlinePlayer">
       <wsdl:input wsaw:Action="BattleShipService/IPortal/GetOnlinePlayer" message="tns:IPortal_GetOnlinePlayer_InputMessage" />
