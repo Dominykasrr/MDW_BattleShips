@@ -50,9 +50,12 @@
 <<<<<<< HEAD
     <Compile Include="Cell.cs" />
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Compile Include="DB.cs" />
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 2143dec... What I have done; 1.	Implemented portal database. 2.	Create DB class. 3.	Create User Registration. 4.	Password Reset. 5.	And more
 =======
 >>>>>>> parent of 2143dec... What I have done; 1.	Implemented portal database. 2.	Create DB class. 3.	Create User Registration. 4.	Password Reset. 5.	And more
     <Compile Include="Game.cs" />

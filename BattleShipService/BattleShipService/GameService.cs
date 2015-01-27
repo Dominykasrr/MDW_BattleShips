@@ -39,6 +39,7 @@ namespace BattleShipService
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         /// <summary>
         /// This logIn methods is going to call "CheckLogin" methods from the DB class.
         /// If there is player found with that username and password from the parameter, 
@@ -53,6 +54,9 @@ namespace BattleShipService
 =======
         public bool Login(string name, string passwd)
 >>>>>>> origin/master
+=======
+        public bool Login(string name, string passwd)
+>>>>>>> parent of 2143dec... What I have done; 1.	Implemented portal database. 2.	Create DB class. 3.	Create User Registration. 4.	Password Reset. 5.	And more
 =======
         public bool Login(string name, string passwd)
 >>>>>>> parent of 2143dec... What I have done; 1.	Implemented portal database. 2.	Create DB class. 3.	Create User Registration. 4.	Password Reset. 5.	And more
