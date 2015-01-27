@@ -14,23 +14,23 @@ namespace BattleShipService
         void StartGameSession(string player);
 
         [OperationContract(IsOneWay = true)]
-        void ConfirmReady(string opponent);
+        void ConfirmReady(List<Ship> ships, string playername); 
 
-       //[OperationContract(IsOneWay = true)]
-       // void ConfirmShips(List<Ship> ships);
-
-       // [OperationContract(IsOneWay = true)]
-       // void Shoot(int x, int y);
+        [OperationContract(IsOneWay = true)]
+        void MakeShot(int cellX, int cellY, int gameID);
     
     }
     [ServiceContract(Namespace = "BattleShipService")]
     public interface IGameCallback
     {
         [OperationContract]
-        void PlayerReady();
+        void NotifyStartGame(string startingPlayer);
 
         [OperationContract]
-        void NotifyShot(int x, int y);
+        void NotifyShot(int cellx, int celly, bool hit);
+
+        [OperationContract]
+        void NotifyGameEnded(string winningPlayer);
     }
 
 }

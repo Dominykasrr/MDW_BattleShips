@@ -14,11 +14,11 @@ namespace BattleShipClient
 {
     public partial class Battle_Ship : Form, ServiceReference1.IChatCallback, ServiceReference1.IBattleCallback
     {
-        string Playername;
-        string Opponent;
-        ServiceReference1.ChatClient proxy2;
-        ServiceReference1.BattleClient proxy3;
-
+        string playername;
+        string opponent;
+        ServiceReference1.ChatClient chatProxy;
+        ServiceReference1.BattleClient battleProxy;
+        private Game curGame;
         private int cellWidth = 35;
         private int cellHeight = 35;
         private int shipLengthToAdd;
@@ -37,18 +37,19 @@ namespace BattleShipClient
             InitializeComponent();
             this.shipLengthToAdd = 0;
 
-            proxy2 = new ServiceReference1.ChatClient(new InstanceContext(this));
-            proxy3 = new ServiceReference1.BattleClient(new InstanceContext(this));
+            chatProxy = new ServiceReference1.ChatClient(new InstanceContext(this));
+            battleProxy = new ServiceReference1.BattleClient(new InstanceContext(this));
 
             this.lbName.Text = username + " !";
-            this.Playername = username;
-            this.Opponent = opponent;
-            proxy2.StartChatSession(Playername);
-            proxy3.StartGameSession(Playername);
+            this.playername = username;
+            this.opponent = opponent;
+            this.chatProxy.StartChatSession(playername);
+            this.battleProxy.StartGameSession(playername);
             this.createCell();
             this.createCell2();
-
+            this.curGame = game;
             rbHorizontal.Checked = true; // initialize radio buttons;
+         //   panel3.Enabled = false;
         }
 
         private void createCell()
@@ -108,7 +109,7 @@ namespace BattleShipClient
             {
                 if (!c.isEmpty)
                 {
-                    e.Graphics.FillRectangle(Brushes.Black, c.P.X, c.P.Y, 35, 35);
+                    e.Graphics.FillRectangle(Brushes.Black, c.P.X, c.P.Y, cellWidth, cellHeight);
                 }
             }
         }
@@ -255,8 +256,7 @@ namespace BattleShipClient
         }
         private void panel3_MouseClick(object sender, MouseEventArgs e)
         {
-
-
+            battleProxy.MakeShot(e.X / cellWidth, e.Y / cellHeight, curGame.GameID);
         }
         public void UpdateChatMessages(string message, string playername)
         {
@@ -269,8 +269,8 @@ namespace BattleShipClient
             {
                 string msg = this.tbWriteChat.Text;
                 this.tbWriteChat.Text = string.Empty;
-                proxy2.PostChatMessage(msg, Playername, Opponent);
-                this.lb_DisplayMessages.Items.Add(Playername + " : " + msg);
+                chatProxy.PostChatMessage(msg, playername, opponent);
+                this.lb_DisplayMessages.Items.Add(playername + " : " + msg);
             }
             else
             {
@@ -304,16 +304,30 @@ namespace BattleShipClient
 
         private void btnReady_Click(object sender, EventArgs e)
         {
-            proxy3.ConfirmReady(Playername);
+            battleProxy.ConfirmReady(Shiplist.ToArray(), playername);
         }
 
         public void PlayerReady()
         {
             this.lb_DisplayMessages.ScrollAlwaysVisible = true;
-            this.lb_DisplayMessages.Items.Add(Playername + " is ready");
+            this.lb_DisplayMessages.Items.Add(playername + " is ready");
         }
 
-        public void NotifyShot(int x, int y)
+        public void NotifyShot(int cellX, int cellY, bool hit)
+        {
+            //if(hit) graphics.FillRectangle(Brushes.Red, Convert.ToInt32(cellX * cellWidth)+1, Convert.ToInt32(cellY * cellHeight)+1, cellWidth, cellHeight); 
+            //else graphics.FillRectangle(Brushes.Green, Convert.ToInt32(cellX * cellWidth)+1, Convert.ToInt32(cellY * cellHeight)+1, cellWidth, cellHeight);
+            if (hit) graphics.DrawEllipse(Pens.Red, Convert.ToInt32(cellX * cellWidth), Convert.ToInt32(cellY * cellHeight), cellWidth, cellHeight);
+            else graphics.DrawEllipse(Pens.Green, Convert.ToInt32(cellX * cellWidth), Convert.ToInt32(cellY * cellHeight), cellWidth, cellHeight);
+        }
+
+        public void NotifyStartGame(string startingPlayer)
+        {
+            MessageBox.Show("Game started");
+            panel2.Enabled = true;
+        }
+
+        public void NotifyGameEnded(string winningPlayer)
         {
             throw new NotImplementedException();
         }

@@ -91,15 +91,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Service References\ServiceReference1\GameService.wsdl" />
-    <None Include="Service References\ServiceReference1\item.wsdl" />
-    <None Include="Service References\ServiceReference1\item.xsd">
+    <None Include="Service References\ServiceReference1\BattleShipService.wsdl" />
+    <None Include="Service References\ServiceReference1\BattleShipService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\item1.xsd">
+    <None Include="Service References\ServiceReference1\BattleShipService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\item2.xsd">
+    <None Include="Service References\ServiceReference1\service.wsdl" />
+    <None Include="Service References\ServiceReference1\service.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -110,16 +110,13 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BattleShipService\BattleShipService.csproj">
       <Project>{6f0e96f8-66fd-4517-a56b-605669eb5532}</Project>
       <Name>BattleShipService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference1\item.disco" />
+    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ServiceReference1\configuration91.svcinfo" />

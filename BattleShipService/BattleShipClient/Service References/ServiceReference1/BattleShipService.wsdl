@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="BattleShipService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="BattleShipService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="BattleShipService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="BattleShipService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="BattleShipService/Imports">
-      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/BattleShipService/GameService/?xsd=xsd0" namespace="BattleShipService" />
-      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/BattleShipService/GameService/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/BattleShipService/GameService/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/BattleShipService" />
+      <xsd:import namespace="BattleShipService" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/BattleShipService" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IPortal_UserRegister_InputMessage">
@@ -76,17 +76,26 @@
   <wsdl:message name="IBattle_ConfirmReady_InputMessage">
     <wsdl:part name="parameters" element="tns:ConfirmReady" />
   </wsdl:message>
-  <wsdl:message name="IBattle_PlayerReady_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:PlayerReady" />
+  <wsdl:message name="IBattle_MakeShot_InputMessage">
+    <wsdl:part name="parameters" element="tns:MakeShot" />
   </wsdl:message>
-  <wsdl:message name="IBattle_PlayerReady_InputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:PlayerReadyResponse" />
+  <wsdl:message name="IBattle_NotifyStartGame_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NotifyStartGame" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_NotifyStartGame_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NotifyStartGameResponse" />
   </wsdl:message>
   <wsdl:message name="IBattle_NotifyShot_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:NotifyShot" />
   </wsdl:message>
   <wsdl:message name="IBattle_NotifyShot_InputCallbackMessage">
     <wsdl:part name="parameters" element="tns:NotifyShotResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_NotifyGameEnded_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NotifyGameEnded" />
+  </wsdl:message>
+  <wsdl:message name="IBattle_NotifyGameEnded_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:NotifyGameEndedResponse" />
   </wsdl:message>
   <wsdl:portType name="IPortal">
     <wsdl:operation name="UserRegister">
@@ -148,13 +157,20 @@
     <wsdl:operation name="ConfirmReady">
       <wsdl:input wsaw:Action="BattleShipService/IBattle/ConfirmReady" message="tns:IBattle_ConfirmReady_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="PlayerReady">
-      <wsdl:output wsaw:Action="BattleShipService/IBattle/PlayerReady" message="tns:IBattle_PlayerReady_OutputCallbackMessage" />
-      <wsdl:input wsaw:Action="BattleShipService/IBattle/PlayerReadyResponse" message="tns:IBattle_PlayerReady_InputCallbackMessage" />
+    <wsdl:operation name="MakeShot">
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/MakeShot" message="tns:IBattle_MakeShot_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NotifyStartGame">
+      <wsdl:output wsaw:Action="BattleShipService/IBattle/NotifyStartGame" message="tns:IBattle_NotifyStartGame_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/NotifyStartGameResponse" message="tns:IBattle_NotifyStartGame_InputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="NotifyShot">
       <wsdl:output wsaw:Action="BattleShipService/IBattle/NotifyShot" message="tns:IBattle_NotifyShot_OutputCallbackMessage" />
       <wsdl:input wsaw:Action="BattleShipService/IBattle/NotifyShotResponse" message="tns:IBattle_NotifyShot_InputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NotifyGameEnded">
+      <wsdl:output wsaw:Action="BattleShipService/IBattle/NotifyGameEnded" message="tns:IBattle_NotifyGameEnded_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="BattleShipService/IBattle/NotifyGameEndedResponse" message="tns:IBattle_NotifyGameEnded_InputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

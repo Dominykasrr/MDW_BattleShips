@@ -36,7 +36,6 @@ namespace BattleShipClient
 
         private void btnLogin_Click_1(object sender, EventArgs e)
         {
-            int id = 0;
             string name = this.tbName.Text;
             myUsername = name;
             string passwd = this.tbPasswd.Text;
@@ -216,10 +215,10 @@ namespace BattleShipClient
         /// And display the player those who are online player lists.
         /// </summary>
         /// <param name="playerlists"></param>
-        public void PlayerLoggedIn(List<BattleShipService.Player> playerlists)
+        public void PlayerLoggedIn(BattleShipService.Player[] playerlists)
         {
             this.lbOnlinePlayers.Items.Clear();
-            onlinePlayers = playerlists;
+            onlinePlayers = playerlists.ToList();
             foreach (BattleShipService.Player players in playerlists)
             {
                 lbOnlinePlayers.Items.Add(players.name);

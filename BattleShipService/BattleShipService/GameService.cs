@@ -17,26 +17,20 @@ namespace BattleShipService
         static Action<List<Player>> PlayerLogIn_Event = delegate { }; //Player login event.
         static Action<String> Invitation_Send_Event = delegate { }; //Invitation send event.
         static Action<Game> Game_Start_Event = delegate { }; //Game start event.
-        Action<Cell[,]> CellArray = delegate { };
-        Cell[,] cellArray;
-        int Pointy = 0;
-        int pointx = 0;
-        int cellWidth = 35;
-        int cellHeight = 35;
 
         public List<Player> onlinePlayers;
         public List<Player> registeredPlayers;
         public List<Player> players;
-        List<Game> gamesLists;
+        List<Game> gamesList;
         private InstanceContext instanceContext;
 
         public GameService()
         {
             onlinePlayers = new List<Player>();
             //registeredPlayers = new List<Player>();
-            gamesLists = new List<Game>();
+            gamesList = new List<Game>();
             //players = new List<Player>();
-          
+
 
             //registeredPlayers.Add(new Player("tool", "bar"));
             //registeredPlayers.Add(new Player("bar", "tool"));
@@ -66,7 +60,7 @@ namespace BattleShipService
             if (dbhelper.CheckLogin(name, passwd) == 1)
             {
                 Player tempPlayer;
-                tempPlayer = new Player(1,name,passwd) ;
+                tempPlayer = new Player(1, name, passwd);
                 tempPlayer.IPortal_Callback = OperationContext.Current.GetCallbackChannel<IPortalCallback>();
                 onlinePlayers.Add(tempPlayer);
                 PlayerLogIn_Event += tempPlayer.IPortal_Callback.PlayerLoggedIn;
@@ -122,7 +116,7 @@ namespace BattleShipService
         public void InvitePlayer(string p1, string p2)
         {
             Player playerinvitee = GetPlayer(p1);
-            
+
             Invitation_Send_Event += playerinvitee.IPortal_Callback.NotifyChallenge;
             Invitation_Send_Event(p2);
         }
@@ -140,7 +134,7 @@ namespace BattleShipService
             Player player1 = GetPlayer(p1);
             Player player2 = GetPlayer(p2);
             Game game = new Game(1, player1, player2);
-
+            gamesList.Add(game);
             Game_Start_Event += player1.IPortal_Callback.NotifyResponce;
             Game_Start_Event += player2.IPortal_Callback.NotifyResponce;
             Game_Start_Event(game);
@@ -181,8 +175,7 @@ namespace BattleShipService
         /// <param name="opponent">Opponent Player</param>
         public void PostChatMessage(string message, string postername, string opponent)
         {
-            Player p = GetPlayer(opponent);
-            p.IchatCallBack.UpdateChatMessages(message, postername);
+            GetPlayer(opponent).IchatCallBack.UpdateChatMessages(message, postername);
         }
 
         /// <summary>
@@ -192,66 +185,95 @@ namespace BattleShipService
         /// <param name="player">Player to start</param>
         public void StartChatSession(string player)
         {
-            Start(player);
+            GetPlayer(player).IchatCallBack = OperationContext.Current.GetCallbackChannel<IChatCallback>();
         }
-
         /// <summary>
         /// This method is to Subscribe the chat funcation.
         /// Here i have created the object p1 of Type Player. And passing the player from the parameter.
         /// After that i have called the callbak IchatCallBack to it.
         /// </summary>
         /// <param name="player"></param>
-        public void Start(string player)
-        {
-            Player p1 = GetPlayer(player);
-            p1.IchatCallBack = OperationContext.Current.GetCallbackChannel<IChatCallback>();
-        }
-        public void AddShip(int x, int y)
-        {
-            Cell temp = new Cell(x, y, true);
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    if (cellArray[i, j] == temp)
-                    {
-                        cellArray[i, j].isEmpty = false;
-                    }
-                }
-            }
-        }
-
-        public void AddCell(int x, int y)
-        {
-            Pointy = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                pointx = 0;
-                for (int j = 0; j < 10; j++)
-                {
-                    Cell temp = new Cell(pointx, Pointy, true);
-                    pointx += cellWidth;
-                    cellArray[j, i] = temp;
-                }
-                Pointy += cellHeight;
-            }
-        }
-
         public void StartGameSession(string player)
         {
-            GameSession(player);
+            GetPlayer(player).IgameCallBack = OperationContext.Current.GetCallbackChannel<IGameCallback>();
+        }
+        public void ConfirmReady(List<Ship> ships, string playername)
+        {
+            foreach (Game g in gamesList)
+            {
+                if (g.Player1.name == playername)
+                {
+                    g.Player1.shiplist = ships;
+                }
+                else if (g.Player2.name == playername)
+                {
+                    g.Player2.shiplist = ships;
+
+                }
+
+                if (g.Player1.shiplist.Count > 0 && g.Player2.shiplist.Count > 0)
+                {
+                    g.Player1.IgameCallBack.NotifyStartGame(g.PlayerToPlay.Name);
+                    g.Player2.IgameCallBack.NotifyStartGame(g.PlayerToPlay.Name);
+                }
+            }
         }
 
-        public void ConfirmReady(string opponent)
+        public void MakeShot(int cellX, int cellY, int gameID)
         {
-            Player p1 = GetPlayer(opponent);
-            p1.IgameCallBack.PlayerReady();
-        }
+            Player shootingPlayer;
+            Player shotAtPlayer;
+            bool hit = false;
+            foreach (Game g in gamesList)
+            {
+                if (g.GameID == gameID)
+                {
+                    if (g.Player1.IgameCallBack == OperationContext.Current.GetCallbackChannel<IGameCallback>()) // means player 1 is making the shot
+                    {
+                        shootingPlayer = g.Player1;
+                        shotAtPlayer = g.Player2;
+                    }
+                    else
+                    {
+                        shootingPlayer = g.Player2;
+                        shotAtPlayer = g.Player1;
+                    }
 
-        public void GameSession(string player)
-        {
-            Player p1 = GetPlayer(player);
-            p1.IgameCallBack = OperationContext.Current.GetCallbackChannel<IGameCallback>();
+                    foreach (Ship s in shotAtPlayer.shiplist.ToList())
+                    {
+                        if (s.isHorizontal)
+                        {
+                            if (cellX >= s.x && cellX <= s.x + s.size && cellY == s.y)
+                            {
+                                s.cubesDestroyed++;
+                                if (s.cubesDestroyed == s.size) shotAtPlayer.shiplist.Remove(s);
+                                if (shotAtPlayer.shiplist.Count == 0)
+                                {
+                                    g.Player1.IgameCallBack.NotifyGameEnded(shootingPlayer.Name);
+                                    g.Player2.IgameCallBack.NotifyGameEnded(shootingPlayer.Name);
+                                }
+                                hit = true;
+                            }
+                        }
+                        else
+                        {
+                            if (cellX == s.x && cellY <= s.x + s.size && cellY >= s.y)
+                            {
+                                s.cubesDestroyed++;
+                                if (s.cubesDestroyed == s.size) shotAtPlayer.shiplist.Remove(s);
+                                if (shotAtPlayer.shiplist.Count == 0)
+                                {
+                                    g.Player1.IgameCallBack.NotifyGameEnded(shootingPlayer.Name);
+                                    g.Player2.IgameCallBack.NotifyGameEnded(shootingPlayer.Name);
+                                }
+                                hit = true;
+                            }
+                        }
+                    }
+                    shotAtPlayer.IgameCallBack.NotifyShot(cellX, cellY, hit);
+                }
+            }
+
         }
     }
 }

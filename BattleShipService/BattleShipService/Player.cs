@@ -16,13 +16,14 @@ namespace BattleShipService
         public string passwd;
         public IPortalCallback iPortal_Callback;
         public IChatCallback IchatCallBack;
-        public IGameCallback igameCallBack;
+        public List<Ship> shiplist;
 
         public Player(int useid, string name, string passwd)
         {
             this.Name = name;
             this.Passwd = passwd;
             this.useID = useid;
+            shiplist = new List<Ship>();
         }
         [DataMember]
         public int UseID { get { return this.useID; } set { this.useID = value; } }
