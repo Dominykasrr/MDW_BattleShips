@@ -27,7 +27,10 @@ namespace BattleShipService
         void NotifyStartGame(string startingPlayer);
 
         [OperationContract]
-        void NotifyShot(int cellx, int celly, bool hit);
+        void NotifyShot(int cellX, int cellY, bool hit);
+
+        [OperationContract]
+        void NotifyShotOutcome(int cellX, int cellY, bool hit, int sizeShipDestroyed);
 
         [OperationContract]
         void NotifyGameEnded(string winningPlayer);

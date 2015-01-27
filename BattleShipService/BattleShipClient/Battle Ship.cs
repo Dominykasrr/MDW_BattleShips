@@ -31,6 +31,12 @@ namespace BattleShipClient
         private int drawRow = 0;
         private int drawCol = 0;
         private int[] shipsLeft = { 4, 3, 2, 1 };
+        private List<Point> opponentsHits = new List<Point>();
+        private List<Point> opponentsMisses = new List<Point>();
+        private List<Point> playersHits = new List<Point>();
+        private List<Point> playersMisses = new List<Point>();
+        private bool myTurn = false;
+
 
         public Battle_Ship(Game game, string username, string opponent)
         {
@@ -49,7 +55,7 @@ namespace BattleShipClient
             this.createCell2();
             this.curGame = game;
             rbHorizontal.Checked = true; // initialize radio buttons;
-         //   panel3.Enabled = false;
+            panel3.Enabled = false;
         }
 
         private void createCell()
@@ -112,6 +118,14 @@ namespace BattleShipClient
                     e.Graphics.FillRectangle(Brushes.Black, c.P.X, c.P.Y, cellWidth, cellHeight);
                 }
             }
+            foreach (Point hitpoint in opponentsHits)
+            {
+                e.Graphics.FillEllipse(Brushes.Red, hitpoint.X, hitpoint.Y, cellWidth, cellHeight);
+            }
+            foreach (Point hitpoint in opponentsMisses)
+            {
+                e.Graphics.FillEllipse(Brushes.Green, hitpoint.X, hitpoint.Y, cellWidth, cellHeight);
+            }
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
@@ -137,7 +151,14 @@ namespace BattleShipClient
                 drawRow += x;
             }
 
-
+            foreach (Point hitpoint in playersHits)
+            {
+                e.Graphics.FillEllipse(Brushes.Red, hitpoint.X, hitpoint.Y, cellWidth, cellHeight);
+            }
+            foreach (Point hitpoint in playersMisses)
+            {
+                e.Graphics.FillEllipse(Brushes.Green, hitpoint.X, hitpoint.Y, cellWidth, cellHeight);
+            }
         }
 
         public Ship GetShipByCell(int cellX, int cellY)
@@ -256,7 +277,32 @@ namespace BattleShipClient
         }
         private void panel3_MouseClick(object sender, MouseEventArgs e)
         {
-            battleProxy.MakeShot(e.X / cellWidth, e.Y / cellHeight, curGame.GameID);
+            if (myTurn)
+            {
+                foreach (Point po in playersHits)
+                {
+                    if (po.X == e.X / cellWidth && po.Y == e.Y / cellHeight)
+                    {
+                        MessageBox.Show("you already shot here");
+                        return;
+                    }
+
+                }
+                foreach (Point po in playersMisses)
+                {
+                    if (po.X == e.X / cellWidth && po.Y == e.Y / cellHeight)
+                    {
+                        MessageBox.Show("you already shot here");
+                        return;
+                    }
+
+                }
+                battleProxy.MakeShot(e.X / cellWidth, e.Y / cellHeight, curGame.GameID);
+            }
+            else
+            {
+                MessageBox.Show("its not your turn!");
+            }
         }
         public void UpdateChatMessages(string message, string playername)
         {
@@ -304,7 +350,14 @@ namespace BattleShipClient
 
         private void btnReady_Click(object sender, EventArgs e)
         {
-            battleProxy.ConfirmReady(Shiplist.ToArray(), playername);
+            if (Shiplist.Count > 1)
+            {
+                battleProxy.ConfirmReady(Shiplist.ToArray(), playername);
+            }
+            else
+            {
+                MessageBox.Show("You must place all ships");
+            }
         }
 
         public void PlayerReady()
@@ -317,19 +370,54 @@ namespace BattleShipClient
         {
             //if(hit) graphics.FillRectangle(Brushes.Red, Convert.ToInt32(cellX * cellWidth)+1, Convert.ToInt32(cellY * cellHeight)+1, cellWidth, cellHeight); 
             //else graphics.FillRectangle(Brushes.Green, Convert.ToInt32(cellX * cellWidth)+1, Convert.ToInt32(cellY * cellHeight)+1, cellWidth, cellHeight);
-            if (hit) graphics.DrawEllipse(Pens.Red, Convert.ToInt32(cellX * cellWidth), Convert.ToInt32(cellY * cellHeight), cellWidth, cellHeight);
-            else graphics.DrawEllipse(Pens.Green, Convert.ToInt32(cellX * cellWidth), Convert.ToInt32(cellY * cellHeight), cellWidth, cellHeight);
+            if (hit)
+            { 
+                opponentsHits.Add(new Point(cellX * cellWidth, cellY * cellHeight));
+                myTurn = false;
+            }
+            else
+            { 
+                opponentsMisses.Add(new Point(cellX * cellWidth, cellY * cellHeight));
+                myTurn = true;
+            }
+            panel2.Refresh();
         }
 
         public void NotifyStartGame(string startingPlayer)
         {
             MessageBox.Show("Game started");
-            panel2.Enabled = true;
+            panel2.Enabled = false;
+            panel3.Enabled = true;
+            if (startingPlayer == playername)
+            {
+                myTurn = true;
+                MessageBox.Show("your turn");
+            }
         }
 
         public void NotifyGameEnded(string winningPlayer)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("Player "+winningPlayer+" has won");
+            this.Close();
+        }
+
+        public void NotifyShotOutcome(int cellX, int cellY, bool hit, int sizeIfShipDestroyed)
+        {
+            if (hit)
+            {
+                playersHits.Add(new Point(cellX * cellWidth, cellY * cellHeight));
+                if (sizeIfShipDestroyed > 0)
+                {
+                    MessageBox.Show("ship of size " + sizeIfShipDestroyed + " was destroyed");
+                }
+                myTurn = true;
+            }
+            else
+            {
+                playersMisses.Add(new Point(cellX * cellWidth, cellY * cellHeight));
+                myTurn = false;
+            }
+            panel3.Refresh();
         }
     }
 }

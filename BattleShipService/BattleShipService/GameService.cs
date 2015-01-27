@@ -119,6 +119,8 @@ namespace BattleShipService
 
             Invitation_Send_Event += playerinvitee.IPortal_Callback.NotifyChallenge;
             Invitation_Send_Event(p2);
+            Invitation_Send_Event -= playerinvitee.IPortal_Callback.NotifyChallenge;
+
         }
 
         /// <summary>
@@ -138,6 +140,8 @@ namespace BattleShipService
             Game_Start_Event += player1.IPortal_Callback.NotifyResponce;
             Game_Start_Event += player2.IPortal_Callback.NotifyResponce;
             Game_Start_Event(game);
+            Game_Start_Event -= player1.IPortal_Callback.NotifyResponce;
+            Game_Start_Event -= player2.IPortal_Callback.NotifyResponce;
         }
 
         /// <summary>
@@ -224,6 +228,7 @@ namespace BattleShipService
             Player shootingPlayer;
             Player shotAtPlayer;
             bool hit = false;
+            int sizeIfShipDestroyed = 0;
             foreach (Game g in gamesList)
             {
                 if (g.GameID == gameID)
@@ -243,10 +248,14 @@ namespace BattleShipService
                     {
                         if (s.isHorizontal)
                         {
-                            if (cellX >= s.x && cellX <= s.x + s.size && cellY == s.y)
+                            if (cellX >= s.x && cellX <= s.x + s.size-1 && cellY == s.y)
                             {
                                 s.cubesDestroyed++;
-                                if (s.cubesDestroyed == s.size) shotAtPlayer.shiplist.Remove(s);
+                                if (s.cubesDestroyed == s.size)
+                                {
+                                    shotAtPlayer.shiplist.Remove(s);
+                                    sizeIfShipDestroyed = s.size;
+                                } 
                                 if (shotAtPlayer.shiplist.Count == 0)
                                 {
                                     g.Player1.IgameCallBack.NotifyGameEnded(shootingPlayer.Name);
@@ -257,10 +266,14 @@ namespace BattleShipService
                         }
                         else
                         {
-                            if (cellX == s.x && cellY <= s.x + s.size && cellY >= s.y)
+                            if (cellX == s.x && cellY <= s.x + s.size-1 && cellY >= s.y)
                             {
                                 s.cubesDestroyed++;
-                                if (s.cubesDestroyed == s.size) shotAtPlayer.shiplist.Remove(s);
+                                if (s.cubesDestroyed == s.size)
+                                {
+                                    shotAtPlayer.shiplist.Remove(s); 
+                                    sizeIfShipDestroyed = s.size;
+                                }
                                 if (shotAtPlayer.shiplist.Count == 0)
                                 {
                                     g.Player1.IgameCallBack.NotifyGameEnded(shootingPlayer.Name);
@@ -271,6 +284,7 @@ namespace BattleShipService
                         }
                     }
                     shotAtPlayer.IgameCallBack.NotifyShot(cellX, cellY, hit);
+                    shootingPlayer.IgameCallBack.NotifyShotOutcome(cellX, cellY, hit, sizeIfShipDestroyed);
                 }
             }
 
