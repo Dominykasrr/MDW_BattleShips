@@ -17,11 +17,18 @@ namespace BattleShipService
         static Action<List<Player>> PlayerLogIn_Event = delegate { }; //Player login event.
         static Action<String> Invitation_Send_Event = delegate { }; //Invitation send event.
         static Action<Game> Game_Start_Event = delegate { }; //Game start event.
+        Action<Cell[,]> CellArray = delegate { };
+        Cell[,] cellArray;
+        int Pointy = 0;
+        int pointx = 0;
+        int cellWidth = 35;
+        int cellHeight = 35;
 
         public List<Player> onlinePlayers;
         public List<Player> registeredPlayers;
         public List<Player> players;
         List<Game> gamesLists;
+        private InstanceContext instanceContext;
 
         public GameService()
         {
@@ -29,11 +36,18 @@ namespace BattleShipService
             //registeredPlayers = new List<Player>();
             gamesLists = new List<Game>();
             //players = new List<Player>();
+          
 
             //registeredPlayers.Add(new Player("tool", "bar"));
             //registeredPlayers.Add(new Player("bar", "tool"));
             //registeredPlayers.Add(new Player("aa", "bb"));
         }
+        public GameService(InstanceContext instanceContext)
+        {
+            // TODO: Complete member initialization
+            this.instanceContext = instanceContext;
+        }
+
 
         /// <summary>
         /// This logIn methods is going to call "CheckLogin" methods from the DB class.
@@ -191,6 +205,36 @@ namespace BattleShipService
         {
             Player p1 = GetPlayer(player);
             p1.IchatCallBack = OperationContext.Current.GetCallbackChannel<IChatCallback>();
+        }
+        public void AddShip(int x, int y)
+        {
+            Cell temp = new Cell(x, y, true);
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (cellArray[i, j] == temp)
+                    {
+                        cellArray[i, j].isEmpty = false;
+                    }
+                }
+            }
+        }
+
+        public void AddCell(int x, int y)
+        {
+            Pointy = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                pointx = 0;
+                for (int j = 0; j < 10; j++)
+                {
+                    Cell temp = new Cell(pointx, Pointy, true);
+                    pointx += cellWidth;
+                    cellArray[j, i] = temp;
+                }
+                Pointy += cellHeight;
+            }
         }
     }
 }
