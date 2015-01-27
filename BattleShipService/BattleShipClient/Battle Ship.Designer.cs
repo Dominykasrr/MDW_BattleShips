@@ -57,9 +57,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lbSelectedSize = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.rbHorizontal = new System.Windows.Forms.RadioButton();
             this.rbVertical = new System.Windows.Forms.RadioButton();
+            this.rbHorizontal = new System.Windows.Forms.RadioButton();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -364,14 +364,15 @@
             this.panel1.Size = new System.Drawing.Size(238, 236);
             this.panel1.TabIndex = 32;
             // 
-            // label4
+            // rbVertical
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 200);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(186, 13);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "Select orientation of ship to be added:";
+            this.rbVertical.AutoSize = true;
+            this.rbVertical.Location = new System.Drawing.Point(108, 216);
+            this.rbVertical.Name = "rbVertical";
+            this.rbVertical.Size = new System.Drawing.Size(60, 17);
+            this.rbVertical.TabIndex = 18;
+            this.rbVertical.Text = "Vertical";
+            this.rbVertical.UseVisualStyleBackColor = true;
             // 
             // rbHorizontal
             // 
@@ -383,21 +384,20 @@
             this.rbHorizontal.Text = "Horizontal";
             this.rbHorizontal.UseVisualStyleBackColor = true;
             // 
-            // rbVertical
+            // label4
             // 
-            this.rbVertical.AutoSize = true;
-            this.rbVertical.Location = new System.Drawing.Point(108, 216);
-            this.rbVertical.Name = "rbVertical";
-            this.rbVertical.Size = new System.Drawing.Size(60, 17);
-            this.rbVertical.TabIndex = 18;
-            this.rbVertical.Text = "Vertical";
-            this.rbVertical.UseVisualStyleBackColor = true;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 200);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(186, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Select orientation of ship to be added:";
             // 
             // Battle_Ship
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(977, 596);
+            this.ClientSize = new System.Drawing.Size(1307, 596);
             this.Controls.Add(this.lbName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lb_DisplayMessages);

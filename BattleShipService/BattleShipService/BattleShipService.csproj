@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -48,7 +47,17 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <Compile Include="Cell.cs" />
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Compile Include="DB.cs" />
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> parent of 2143dec... What I have done; 1.	Implemented portal database. 2.	Create DB class. 3.	Create User Registration. 4.	Password Reset. 5.	And more
+=======
+>>>>>>> parent of 2143dec... What I have done; 1.	Implemented portal database. 2.	Create DB class. 3.	Create User Registration. 4.	Password Reset. 5.	And more
     <Compile Include="Game.cs" />
     <Compile Include="IBattle.cs" />
     <Compile Include="IChat.cs" />

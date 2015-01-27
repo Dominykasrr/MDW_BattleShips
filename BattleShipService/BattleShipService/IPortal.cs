@@ -12,13 +12,7 @@ namespace BattleShipService
     public interface IPortal
     {
         [OperationContract]
-        bool UserRegister(int Id, string name, string passwd);
-        
-        [OperationContract]
-        bool Login(int Id, string name, string passwd);
-
-        [OperationContract]
-        bool ResetPassword(string name, string passwd);
+        bool Login(string name, string passwd);
 
         [OperationContract]
         List<Player> GetOnlinePlayer();
@@ -35,6 +29,7 @@ namespace BattleShipService
         [OperationContract(IsOneWay = true)]
         void Update();
     }
+
 
     [ServiceContract(Namespace = "BattleShipService")]
     public interface IPortalCallback

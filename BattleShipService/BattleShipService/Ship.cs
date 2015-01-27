@@ -11,7 +11,15 @@ namespace BattleShipService
     {
         public int x;
         public int y;
-        bool direction;
-        int size;
+        public bool isHorizontal;
+        public int size;
+        public Ship(int x, int y, bool isHorizontal, int size)
+        {
+            this.x = x;
+            this.y = y;
+            this.isHorizontal = isHorizontal;
+            this.size = size;
+        }
     }
+
 }
